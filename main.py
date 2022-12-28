@@ -12,13 +12,15 @@ def nombre_var(nombre, *indices):
     return nombre+'_'+'_'.join(str(x) for x in indices)  
 
 def imprime_original(solicitudes):
-        requerimiento = 45*'='+'\n'
-        requerimiento += "{:<10} {:<10} {:<12} {:^10} \n".format('Shipper', 'Origin', 'Destination', 'Quantity')
-        requerimiento += 45*'='+'\n'
-        for linea in solicitudes:
-            requerimiento +="{:<10} {:<10} {:<12} {:^10} \n".format(linea[0], linea[1], linea[2], linea[3])
-        requerimiento += 45*'='+'\n'
-        return requerimiento
+    costo_inicial = 0
+    requerimiento = 45*'='+'\n'
+    requerimiento += "{:<10} {:<10} {:<12} {:^10} \n".format('Shipper', 'Origin', 'Destination', 'Quantity')
+    requerimiento += 45*'='+'\n'
+    for linea in solicitudes:
+        costo_inicial += float(linea[3])*float(linea[4])
+        requerimiento +="{:<10} {:<10} {:<12} {:^10} \n".format(linea[0], linea[1], linea[2], linea[3])
+    requerimiento += 45*'='+'\n'
+    return costo_inicial, requerimiento
 
 def resuelve_modelo(instancia):
     # 1. Crer modelo
@@ -101,6 +103,7 @@ def resuelve_modelo(instancia):
     
     # 7. Resolver
     SW.solve()
+    costo_optimo = value(SW.objective)
     
     # 8. Imprimir resultado
     separador = 45*'='+'\n'
@@ -113,13 +116,13 @@ def resuelve_modelo(instancia):
                 if x[i][j][k].value() > 0:
                     resultado+="{:<10} {:<10} {:<12} {:^10} \n".format(i, j, k, x[i][j][k].value())
     resultado+=separador
-    return resultado
+    return costo_optimo, resultado
         
 # ====================================
 # APLICACIÓN WEB
 # ====================================
 
-# Page configuration
+# Configuración de la página
 st.set_page_config(page_title='Optimización de Flujos')
 ocultar_menu ='''
     <style>
@@ -140,10 +143,15 @@ with input_data:
     if archivo:
         datos = [linea.decode('utf-8').split() for linea in archivo]
         st.header('Datos de Entrada')
-        st.text(imprime_original(datos))
+        costo_inicial, instancia = imprime_original(datos)
+        st.text(instancia)
+        st.text('Costo inicial ='+' $'+str(costo_inicial))
         if st.button('Optimizar Flujos'):
-            solucion = resuelve_modelo(datos)
+            costo_optimo, solucion = resuelve_modelo(datos)
             result_summary = st.container()
             with result_summary:
                 st.header('Resultado')
                 st.text(solucion)
+                st.text('Costo óptimo ='+' $'+str(costo_optimo))
+                
+                st.text('Reducción porcentual ='+"{:.2f}".format(100*(costo_inicial-costo_optimo)/costo_inicial)+'%')
