@@ -119,6 +119,15 @@ def resuelve_modelo(instancia):
 # APLICACIÓN WEB
 # ====================================
 
+# Page configuration
+st.set_page_config(page_title='Optimización de Flujos')
+ocultar_menu ='''
+    <style>
+    #MainMenu {visibility: hidden; }
+    footer {visibility: hidden; }
+    <\style>'''
+st.markdown(ocultar_menu, unsafe_allow_html=True)
+
 header = st.container()
 input_data =st.container()
 solucion=''
