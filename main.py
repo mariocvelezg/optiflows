@@ -11,12 +11,12 @@ from pulp import *
 def nombre_var(nombre, *indices):
     return nombre+'_'+'_'.join(str(x) for x in indices)  
 
-def imprime_original(solicitudes):
+def imprime_original(instancia):
     costo_inicial = 0
     requerimiento = 45*'='+'\n'
     requerimiento += "{:<10} {:<10} {:<12} {:^10} \n".format('Shipper', 'Origin', 'Destination', 'Quantity')
     requerimiento += 45*'='+'\n'
-    for linea in solicitudes:
+    for linea in instancia:
         costo_inicial += float(linea[3])*float(linea[4])
         requerimiento +="{:<10} {:<10} {:<12} {:^10} \n".format(linea[0], linea[1], linea[2], linea[3])
     requerimiento += 45*'='+'\n'
@@ -133,13 +133,13 @@ st.markdown(ocultar_menu, unsafe_allow_html=True)
 
 header = st.container()
 input_data =st.container()
-solucion=''
+#solucion=''
 
 with header:
     st.title('Modelo de Simplicación de Flujos')
 
 with input_data:
-    archivo = st.file_uploader('Subir archivo de requerimientos', type='txt', label_visibility='hidden')
+    archivo = st.file_uploader('Subir archivo de requerimientos', type='txt', label_visibility='visible')
     if archivo:
         datos = [linea.decode('utf-8').split() for linea in archivo]
         st.header('Datos de Entrada')
