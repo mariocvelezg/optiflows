@@ -133,7 +133,6 @@ st.markdown(ocultar_menu, unsafe_allow_html=True)
 
 header = st.container()
 input_data =st.container()
-#solucion=''
 
 with header:
     st.title('Modelo de Simplicación de Flujos')
@@ -153,5 +152,5 @@ with input_data:
                 st.header('Resultado')
                 st.text(solucion)
                 st.text('Costo óptimo ='+' $'+str(costo_optimo))
-                
                 st.text('Reducción porcentual ='+"{:.2f}".format(100*(costo_inicial-costo_optimo)/costo_inicial)+'%')
+                st.download_button('Descargar Solucion', solucion, file_name='flujos_optimos.txt')
