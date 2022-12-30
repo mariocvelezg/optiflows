@@ -131,6 +131,10 @@ ocultar_menu ='''
     <\style>'''
 st.markdown(ocultar_menu, unsafe_allow_html=True)
 
+
+st.session_state.optimizar=0
+'session state object', st.session_state
+
 header = st.container()
 input_data =st.container()
 
