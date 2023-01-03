@@ -1,0 +1,5 @@
+conda activate streamlit
+cd C:\Users\marvelez\Dropbox\EAFIT\EXTENSION\optiflows
+git commit -a -m " .. mensaje..."
+git push origin main
+streamlit run main.py
