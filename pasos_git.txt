@@ -1,5 +1,8 @@
 conda activate streamlit
 cd C:\Users\marvelez\Dropbox\EAFIT\EXTENSION\optiflows
+//git init
+//git add --all
 git commit -a -m " .. mensaje..."
+//git remote add origin [url]
 git push origin main
-streamlit run main.py
+streamlit run [py file]

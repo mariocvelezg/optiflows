@@ -97,10 +97,15 @@ def resuelve_modelo(instancia):
     resultado = separador
     resultado+="{:<10} {:<10} {:<12} {:^10} \n".format('Shipper', 'Origin', 'Destination', 'Quantity')
     resultado+=separador
+    col_wise_sln = [[], [], [], []]
     for i in x:
         for j in x[i]:
             for k in x[i][j]:
                 if x[i][j][k].value() > 0:
                     resultado+="{:<10} {:<10} {:<12} {:^10} \n".format(i, j, k, x[i][j][k].value())
+                    col_wise_sln[0].append(i)
+                    col_wise_sln[1].append(j)
+                    col_wise_sln[2].append(k)
+                    col_wise_sln[3].append(x[i][j][k].value())
     resultado+=separador
-    return costo_optimo, resultado
+    return costo_optimo, resultado, col_wise_sln
