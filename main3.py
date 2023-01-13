@@ -33,31 +33,40 @@ def imprime_texto_datos(datos:list) -> str:
 
 # Crea tabla de datos de entrada en Plotly
 def imprime_tabla_datos():
+    col_names = ['Shipper', 'Origen', 'Destino', 'Cantidad'] 
     dat = st.session_state.datos
     fig = go.Figure(data=[go.Table(
-            header=dict(values=['Shipper', 'Origen', 'Destino', 'Cantidad']),
+            header=dict(values=[f"<b>{col}</b>" for col in col_names],
+                        font=dict(color='black', family="Courier New", size=12)),
             cells=dict(values=[
                 [fila[0] for fila in dat],
                 [fila[1] for fila in dat],
                 [fila[2] for fila in dat],
-                [fila[3] for fila in dat]]))])
+                [fila[3] for fila in dat]],
+                        font=dict(color='black', family="Courier New", size=12),
+                        height=25))])
     fig.update_layout(
         autosize=False,
-        height=62*len(st.session_state.datos[0]),
+        height=76*len(st.session_state.datos[0]),
         margin={'l':0, 'r':0, 'b':0, 't':0})
     st.session_state.tabla_datos=True
     st.write(fig)
     st.text('Costo inicial = $'+str(st.session_state.costo_inicial))
+    st.text("") # Espacio en blanco
 
 # Crea tabla con solución óptima en Plotly
 def imprime_tabla_solucion():
+    col_names = ['Shipper', 'Origen', 'Destino', 'Cantidad'] 
     sol = st.session_state.solucion_list
     fig = go.Figure(data=[go.Table(
-            header=dict(values=['Shipper', 'Origen', 'Destino', 'Cantidad']),
-            cells=dict(values=[sol[0], sol[1], sol[2], sol[3]]))])
-    fig.update_layout(autosize=False, height=25*len(sol[0]), margin={'l':0, 'r':0, 'b':0, 't':0})
+            header=dict(values=[f"<b>{col}</b>" for col in col_names],
+                        font=dict(color='black', family="Courier New", size=12)),
+            cells=dict(values=[sol[0], sol[1], sol[2], sol[3]],
+                       font=dict(color='black', family="Courier New", size=12), height=25))])
+    fig.update_layout(autosize=False, height=31*len(sol[0]), margin={'l':0, 'r':0, 'b':0, 't':0})
     st.write(fig)
     st.text('Costo óptimo = $'+str(st.session_state.costo_optimo))
+    st.text('') # Espacio en blanco
 
 def optimizar_flujos():
     st.session_state.costo_optimo, st.session_state.solucion_txt, st.session_state.solucion_list = lp.resuelve_modelo(st.session_state.datos)
